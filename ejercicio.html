@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Problema</title>
+<meta charset="utf-8">
+<style>
+	#contenedor{display:flex;width:80%;flex-direction: row;justify-content:space-around;}
+	#informacion  { border: 1px solid black; height:500px;}
+</style>
+
+
+</head>
+<body>
+<div id="contenedor">
+	
+	<form id="formu" method="POST" action="#">
+		<h2>Controles de los formularios</h2>
+		<fieldset>
+			<legend>Trabajar con cajas</legend>
+			<label>Nombre : </label><input id="nombre" name="nombre" type="text" placeholder="Introduce tu nombre"> 
+			<label>Escribe tu clave: </label><input id="clave" name="clave" type="password" /><br>
+			<label>Escribe un comentario:</label><textarea id="comentario" name="comentario" ></textarea><br>
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Trabajar con radios y checkbox</legend>
+			<p>Trabajar con radios</p>
+			<input type="radio" value="si" name="pregunta"><label>SI</label> 
+			<input type="radio" value="no" name="pregunta" checked><label>NO</label>
+			<input type="radio" value="nsnc" name="pregunta"><label>NS/NC</label><br>
+			<p>Trabajar con checkbox</p>
+			<input type="checkbox" value="condiciones" name="condiciones" id="c1"><label>He leido y acepto las condiciones</label><br>
+			<input type="checkbox" value="privacidad" name="privacidad" id="c2"><label> He leido la politica de privacidad</label><br>
+		</fieldset>
+		<br>
+		<fieldset>
+			<legend>Trabajar con listas simples</legend>
+			<select size="1" name="colores" id="lista">
+				<option value="color_rojo">Rojo</option>
+				<option value="color_amarillo">amarillo</option>
+				<option value="color_verde">Verde</option>
+				<option value="color_azul">Azul</option>
+				<option value="color_blanco">blanco</option>
+				<option value="color_negro">negro</option>
+			</select>
+		</fieldset>
+		<br/><br/>
+		<input type="button" value="text-password-textarea" onClick="cajas()">
+		<input type="button" value="radios" onClick="radios()">
+		<input type="button" value="checkbox" onClick="checkbox()">
+		<input type="button" value="listasimple" onClick="listasimple()">
+	</form>
+	<aside>
+		<h2>Contenidos de los controles</h2>
+		<p  id="informacion">Espacio para tu texto, pulsa en cada boton.</p>
+	</aside>
+
+
+</div>
+
+	<script>
+        
+        var vtexto = document.getElementById("informacion");
+        var vnombre = document.getElementById("nombre");
+        var vpassword = document.getElementById("clave");
+        var vcomentario = document.getElementById("comentario")
+        var check=0;
+        function cajas(){
+            checkbox();
+
+
+            //he puesto un if que si check vale 1 lo que significa que se tienen seleccionadas las dos casillas de terminos se ejecute el codigo, y un else que da un mensaje de que primero hay que darle a las casillas
+
+            if (check==1) {
+                var w=vtexto;
+            vtexto.innerHTML = "<br><strong>Mi nombre es</strong> "+vnombre.value+"<br><br>"+"<strong>Mi clave es</strong> "+vpassword.value+"<br><br>"+"Mi comentario es "+vcomentario.value;
+
+            //despues de ejecutar el codigo check vale cero otra vez 
+            check=0;
+            }else
+                vtexto.innerHTML="tiene que marcar las casillas de terminos";
+                check=0;
+                
+        }
+        
+        function listasimple(){
+            var vlista = document.getElementById("lista");
+            var aaaa=vtexto;
+
+            //como se que el blanco esta de cuarto pongo un if que en la cuarta posicion tenga que elegir otro color
+            //y otro if para que si no esta en la posicion cuatro haga lo que hacia antes
+            if (vlista.selectedIndex==4) {
+                vtexto.innerHTML="tiene que introducir otro color";
+                vtexto=aaaa;
+            }else if(vlista.selectedIndex!=4){
+            vtexto.innerHTML += "<p>El value del elemento seleccionado es "+vlista.value+"</p>";
+            //selectedIndex es para que te devuelva la posicion del elemento, siempre empieza desde cero
+            vtexto.innerHTML += "<p>La posicion del elemento seleccionado es "+vlista.selectedIndex+"</p>";
+            vtexto.innerHTML += "<p>El texto del elemento seleccionado es "+vlista.options[vlista.selectedIndex].innerHTML+"</p>";
+        }
+        }
+        //.checked se utiliza con radio y checkbox que son preguntas de elegir. 
+        function radios(){
+
+
+
+            //como se que ns/nc esta en la segunda posicion pongo un if para que en la posicion 0 y 1 haga lo que hacia antes
+            //y en la posicion 2 pida que introduzca otra opcion
+            var vradio = document.querySelectorAll("input[type='radio']");
+            var a=vradio;
+            for(i=0;i<vradio.length;i++){
+                if(vradio[i].checked==true){
+                    vradio=a;
+                vtexto.innerHTML += "<p>La pregunta seleccionada es "+vradio[i].value+"</p>";
+            }
+                if(vradio[2].checked==true){
+                    vtexto.innerHTML="porfavor elija otra opcion";
+                }
+            
+            }
+
+        }
+        
+        function checkbox(){
+            var vcheckbox = document.querySelectorAll("input[type='checkbox']");
+            var pp=vtexto;
+            
+            //el primer if hace que si estan en true los dos checkboxs se ejecute el codigo y ademas he puesto una variable llamada check a la que se le da el valor 1 que sirve para que cuando se quiera ejecutar la funcion cajas compruebe que se tienen las dos opciones seleccionadas
+            if (vcheckbox[0].checked==true && vcheckbox[1].checked==true) {
+                vtexto=pp;
+                vtexto.innerHTML += "<p>Los seleccionados son "+ vcheckbox[0].value +" "+ vcheckbox[1].value +"</p>";
+                check=1;
+
+
+                //los otros if sirven para que cuando no se tienen las dos opciones, se tenga la que se tenga de un mensage de que hay que darle a las dos
+
+            }else if(vcheckbox[1].checked==true){
+                vtexto.innerHTML += "tiene que marcar ambas opciones </br>";
+            }else if(vcheckbox[0].checked==true){
+                   vtexto.innerHTML += "tiene que marcar ambas opciones </br>";
+            }
+
+        
+
+
+        }
+
+    </script>	
+</body>
+</html>
+
+
